@@ -4,81 +4,137 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transcript summarizer</title>
+    <title>Transcript Summarizer</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             padding: 20px;
+            background-color: #f0f4f8;
+            /* Light bluish background */
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #007bff;
+            /* Blue color for headings */
         }
 
         form {
-            display: flex;
-            flex-direction: column;
             max-width: 400px;
             margin: 0 auto;
+            background-color: #ffffff;
+            /* White background for form */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
 
         label {
+            display: block;
             margin-bottom: 8px;
+            font-weight: bold;
         }
 
         input[type="file"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 100%;
             margin-bottom: 12px;
+            font-size: 14px;
         }
 
         button {
             padding: 10px 20px;
             background-color: #007bff;
+            /* Blue button */
             color: white;
             border: none;
             cursor: pointer;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            /* Smooth transition on hover */
         }
 
         button:hover {
             background-color: #0056b3;
+            /* Darker blue on hover */
         }
 
         .message {
             margin-top: 12px;
             font-weight: bold;
+            text-align: center;
+            color: #007bff;
+            /* Blue color for message */
+        }
+
+        .summary {
+            margin-top: 20px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            background-color: #ffffff;
+            /* White background for summary */
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .summary h2 {
+            font-size: 18px;
+            margin-bottom: 8px;
+            color: #007bff;
+            /* Blue color for headings inside summary */
+        }
+
+        .summary p {
+            font-size: 16px;
+            line-height: 1.6;
         }
     </style>
 </head>
 
 <body>
-    <h1>Transcript Upload</h1>
+    <h1>Transcript Upload and Summarization</h1>
     <form id="uploadForm" enctype="multipart/form-data">
         <label for="file">Select File:</label>
         <input type="file" id="file" name="file" required>
         <button type="submit">Upload File</button>
     </form>
     <div id="message" class="message"></div>
+    <div id="summary" class="summary"></div>
 
     <script>
-        document.getElementById('uploadForm').addEventListener('submit', function (event) {
+        document.getElementById('uploadForm').addEventListener('submit', async function (event) {
             event.preventDefault();
 
             const formData = new FormData();
             formData.append('file', document.getElementById('file').files[0]);
 
-            fetch('http://localhost:3000/upload', {
-                method: 'POST',
-                body: formData
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    document.getElementById('message').textContent = data;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    document.getElementById('message').textContent = 'Error uploading file';
+            try {
+                const response = await fetch('http://localhost:3000/upload', {
+                    method: 'POST',
+                    body: formData
                 });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.text();
+                console.log('Success:', data);
+
+                // Update UI elements
+                document.getElementById('message').textContent = 'File uploaded successfully';
+                document.getElementById('summary').innerHTML = `<h2>Summary:</h2><p>${data}</p>`;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('message').textContent = 'Error uploading file';
+            }
         });
+
     </script>
 </body>
 
