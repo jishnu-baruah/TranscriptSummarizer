@@ -1,0 +1,10 @@
+http://127.0.0.1:9500/apex
+sudo bash install.sh
+sudo apt --fix-broken install
+PORT NO : 9500
+PORT NO : 9501
+PASS : snu@123
+
+LOgin : System
+
+
