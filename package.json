@@ -4,7 +4,8 @@
   "description": "``` go mod init 0g-sdk-demo go mod tidy go run main.go ```",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +14,7 @@
     "@google/generative-ai": "^0.12.0",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "multer": "^1.4.5-lts.1"
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.4"
   }
 }
